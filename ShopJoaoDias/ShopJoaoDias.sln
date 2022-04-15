@@ -9,7 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{F7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopJoaoDias.Web", "ShopJoaoDias.Web\ShopJoaoDias.Web.csproj", "{A89C117F-0208-484A-9367-256BA4665616}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopJoaoDias.ProductAPI", "ShopJoaoDias.ProductAPI\ShopJoaoDias.ProductAPI.csproj", "{7A904631-F89B-4D73-8131-D2CC57E9D8E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopJoaoDias.ProductAPI", "ShopJoaoDias.ProductAPI\ShopJoaoDias.ProductAPI.csproj", "{7A904631-F89B-4D73-8131-D2CC57E9D8E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopJoaoDias.IndentityServer", "ShopJoaoDias.IndentityServer\ShopJoaoDias.IndentityServer.csproj", "{0B0645B2-051C-46DE-8C85-2067DCA89757}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{7A904631-F89B-4D73-8131-D2CC57E9D8E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A904631-F89B-4D73-8131-D2CC57E9D8E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A904631-F89B-4D73-8131-D2CC57E9D8E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B0645B2-051C-46DE-8C85-2067DCA89757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B0645B2-051C-46DE-8C85-2067DCA89757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B0645B2-051C-46DE-8C85-2067DCA89757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B0645B2-051C-46DE-8C85-2067DCA89757}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A89C117F-0208-484A-9367-256BA4665616} = {C90D45F9-0C6B-4386-8398-7E888C97E977}
 		{7A904631-F89B-4D73-8131-D2CC57E9D8E7} = {F7689F8C-AFF7-48E3-AF5D-4860745B0FCE}
+		{0B0645B2-051C-46DE-8C85-2067DCA89757} = {F7689F8C-AFF7-48E3-AF5D-4860745B0FCE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C182AA54-3F66-423F-AA5B-E9831334EC1F}
