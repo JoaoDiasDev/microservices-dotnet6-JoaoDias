@@ -34,7 +34,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductVO>> FindById(ProductVO productVo)
+        public async Task<ActionResult<ProductVO>> FindById([FromBody] ProductVO productVo)
         {
             if (productVo == null) return BadRequest();
             var product = await _repository.Create(productVo);
@@ -42,7 +42,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ProductVO>> Update(ProductVO productVo)
+        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO productVo)
         {
             if (productVo == null) return BadRequest();
             var product = await _repository.Update(productVo);
