@@ -6,7 +6,7 @@ namespace ShopJoaoDias.IndentityServer.Configuration
     public static class IdentityConfiguration
     {
         public const string Admin = "Admin";
-        public const string Customer = "Customer";
+        public const string Client = "Client";
 
         public static IEnumerable<IdentityResource> IdentityResources => new List<IdentityResource>
         {
@@ -38,8 +38,8 @@ namespace ShopJoaoDias.IndentityServer.Configuration
             ClientId = "shop_joao_dias",
             ClientSecrets = {new Secret("super_secret_dias".Sha256())},
             AllowedGrantTypes = GrantTypes.Code,
-            RedirectUris = {"http://localhost:32773/signin-oidc"},
-            PostLogoutRedirectUris = {"http://localhost:32773/signout-callback-oidc"},
+            RedirectUris = {"https://localhost:4430/signin-oidc"},
+            PostLogoutRedirectUris = {"https://localhost:4430/signout-callback-oidc"},
             AllowedScopes = new List<string>
             {
                 IdentityServerConstants.StandardScopes.OpenId,
