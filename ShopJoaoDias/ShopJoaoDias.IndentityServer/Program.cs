@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopJoaoDias.IndentityServer.Configuration;
 using ShopJoaoDias.IndentityServer.Initializer;
+using ShopJoaoDias.IndentityServer.Model;
 using ShopJoaoDias.IndentityServer.Model.Context;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -45,6 +45,7 @@ namespace ShopJoaoDias.IndentityServer.Configuration
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile,
                 IdentityServerConstants.StandardScopes.Email,
+                "shop_joao_dias"
             }
             }
         };

@@ -1,6 +1,7 @@
 ﻿using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using ShopJoaoDias.IndentityServer.Configuration;
+using ShopJoaoDias.IndentityServer.Model;
 using ShopJoaoDias.IndentityServer.Model.Context;
 using System.Security.Claims;
 
