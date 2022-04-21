@@ -1,55 +1,14 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using ShopJoaoDias.IndentityServer.Configuration;
-using ShopJoaoDias.IndentityServer.Model.Context;
+namespace ShopJoaoDias.IndentityServer;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-var connection = builder.Configuration["MySQLConnection:MySQLConnectionString"];
-
-builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(connection, ServerVersion.AutoDetect(connection)));
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<MySQLContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddIdentityServer(options =>
+public static class Program
 {
-    options.Events.RaiseErrorEvents = true;
-    options.Events.RaiseInformationEvents = true;
-    options.Events.RaiseFailureEvents = true;
-    options.Events.RaiseSuccessEvents = true;
-    options.EmitStaticAudienceClaim = true;
-
-})
-    .AddInMemoryIdentityResources(IdentityConfiguration.IdentityResources)
-    .AddInMemoryClients(IdentityConfiguration.Clients)
-    .AddAspNetIdentity<ApplicationUser>()
-    .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
-    .AddDeveloperSigningCredential();
-
-builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
+    public static void Main(string[] args)
+    {
+        CreateHostBuilder(args).Build().Run();
+    }
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args).
+            ConfigureWebHostDefaults(x => x.UseStartup<Startup>());
+    }
 }
-app.UseHttpsRedirection();
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseIdentityServer();
-
-app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.Run();
