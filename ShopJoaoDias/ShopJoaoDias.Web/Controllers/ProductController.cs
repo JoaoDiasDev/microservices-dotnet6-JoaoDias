@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.Web.Models;
 using ShopJoaoDias.Web.Services.IServices;
+using ShopJoaoDias.Web.Utils;
 
 namespace ShopJoaoDias.Web.Controllers
 {
@@ -13,17 +15,20 @@ namespace ShopJoaoDias.Web.Controllers
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
+        [Authorize]
         public async Task<IActionResult> ProductIndex()
         {
             var products = await _productService.FindAllProducts();
             return View(products);
         }
 
+
         public async Task<IActionResult> ProductCreate()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ProductCreate(ProductModel model)
         {
@@ -42,6 +47,7 @@ namespace ShopJoaoDias.Web.Controllers
             return NotFound();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> ProductUpdate(ProductModel model)
         {
@@ -60,6 +66,7 @@ namespace ShopJoaoDias.Web.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpPost]
         public async Task<IActionResult> ProductDelete(ProductModel model)
         {

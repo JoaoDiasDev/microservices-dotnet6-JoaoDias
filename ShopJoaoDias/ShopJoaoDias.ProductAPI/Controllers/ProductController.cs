@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.ProductAPI.Data.ValueObjects;
 using ShopJoaoDias.ProductAPI.Repository;
+using ShopJoaoDias.ProductAPI.Utils;
 
 namespace ShopJoaoDias.ProductAPI.Controllers
 {
@@ -15,6 +17,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductVO>>> FindAll()
         {
@@ -22,6 +25,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             return Ok(products);
         }
 
+        [Authorize]
         [HttpGet("{id:long}")]
         public async Task<ActionResult<ProductVO>> FindById(long id)
         {
@@ -33,6 +37,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<ProductVO>> FindById([FromBody] ProductVO productVo)
         {
@@ -41,6 +46,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             return Ok(product);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO productVo)
         {
@@ -49,6 +55,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpDelete("{id:long}")]
         public async Task<ActionResult> Delete(long id)
         {
