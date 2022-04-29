@@ -1,9 +1,11 @@
+using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ShopJoaoDias.IndentityServer.Configuration;
 using ShopJoaoDias.IndentityServer.Initializer;
 using ShopJoaoDias.IndentityServer.Model;
 using ShopJoaoDias.IndentityServer.Model.Context;
+using ShopJoaoDias.IndentityServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,7 @@ builder.Services.AddDbContext<MySQLContext>(options => options.UseMySql(connecti
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<MySQLContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
 
 builder.Services.AddIdentityServer(options =>
     {
@@ -31,6 +33,9 @@ builder.Services.AddIdentityServer(options =>
     .AddAspNetIdentity<ApplicationUser>()
     .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
     .AddDeveloperSigningCredential();
+
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builder.Services.AddControllersWithViews();
 

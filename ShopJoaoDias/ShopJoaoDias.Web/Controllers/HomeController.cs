@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.Web.Models;
+using ShopJoaoDias.Web.Services.IServices;
 using System.Diagnostics;
 
 namespace ShopJoaoDias.Web.Controllers
@@ -8,15 +10,26 @@ namespace ShopJoaoDias.Web.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _productService.FindAllProducts("");
+            return View(products);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Details(int id)
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            var product = await _productService.FindProductById(id, accessToken);
+            return View(product);
         }
 
         public IActionResult Privacy()
@@ -27,6 +40,8 @@ namespace ShopJoaoDias.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Login()
         {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+
             return RedirectToAction(nameof(Index));
         }
 
