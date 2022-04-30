@@ -6,7 +6,7 @@ using ShopJoaoDias.ProductAPI.Utils;
 
 namespace ShopJoaoDias.ProductAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class ProductController : ControllerBase
     {
