@@ -41,7 +41,7 @@ namespace ShopJoaoDias.CartAPI.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("cart_detail");
+                    b.ToTable("cart_detail", (string)null);
                 });
 
             modelBuilder.Entity("ShopJoaoDias.CartAPI.Model.CartHeader", b =>
@@ -63,7 +63,7 @@ namespace ShopJoaoDias.CartAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("cart_header");
+                    b.ToTable("cart_header", (string)null);
                 });
 
             modelBuilder.Entity("ShopJoaoDias.CartAPI.Model.Product", b =>
@@ -102,7 +102,7 @@ namespace ShopJoaoDias.CartAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("product");
+                    b.ToTable("product", (string)null);
                 });
 
             modelBuilder.Entity("ShopJoaoDias.CartAPI.Model.CartDetail", b =>

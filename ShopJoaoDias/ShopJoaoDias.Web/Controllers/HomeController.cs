@@ -30,8 +30,8 @@ namespace ShopJoaoDias.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var product = await _productService.FindProductById(id, accessToken);
-            return View(product);
+            var model = await _productService.FindProductById(id, accessToken);
+            return View(model);
         }
 
         [HttpPost]
@@ -49,14 +49,14 @@ namespace ShopJoaoDias.Web.Controllers
                 }
             };
 
-            CartDetailViewModel cartDetail = new CartDetailViewModel()
+            var cartDetail = new CartDetailViewModel()
             {
                 Count = model.Count,
                 ProductId = model.Id,
-                Product = await _productService.FindProductById(model.Id, token)
+                Product = await _productService.FindProductById(model.Id, token),
             };
 
-            List<CartDetailViewModel> cartDetails = new List<CartDetailViewModel>();
+            var cartDetails = new List<CartDetailViewModel>();
             cartDetails.Add(cartDetail);
             cart.CartDetails = cartDetails;
 

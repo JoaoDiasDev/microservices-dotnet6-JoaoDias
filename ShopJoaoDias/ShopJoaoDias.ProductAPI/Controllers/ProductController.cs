@@ -21,6 +21,7 @@ namespace ShopJoaoDias.ProductAPI.Controllers
         public async Task<ActionResult<IEnumerable<ProductVO>>> FindAll()
         {
             var products = await _repository.FindAll();
+            if (products == null) return NotFound();
             return Ok(products);
         }
 
@@ -31,9 +32,6 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             var product = await _repository.FindById(id);
             if (product == null) return NotFound();
             return Ok(product);
-            {
-
-            }
         }
 
         [Authorize]
