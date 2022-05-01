@@ -18,9 +18,6 @@ builder.Services.AddAuthentication(options =>
     .AddCookie("Cookies", c =>
     {
         c.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-        //c.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        //c.Cookie.HttpOnly = false;
-        //c.Cookie.SameSite = SameSiteMode.None;
     })
     .AddOpenIdConnect("oidc", options =>
     {

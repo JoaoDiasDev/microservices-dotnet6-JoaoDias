@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.Web.Models;
 using ShopJoaoDias.Web.Services.IServices;
-using System.Diagnostics;
 
 namespace ShopJoaoDias.Web.Controllers
 {
@@ -13,7 +13,9 @@ namespace ShopJoaoDias.Web.Controllers
         private readonly IProductService _productService;
         private readonly ICartService _cartService;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService, ICartService cartService)
+        public HomeController(ILogger<HomeController> logger,
+            IProductService productService,
+            ICartService cartService)
         {
             _logger = logger;
             _productService = productService;
@@ -29,8 +31,8 @@ namespace ShopJoaoDias.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Details(int id)
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-            var model = await _productService.FindProductById(id, accessToken);
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var model = await _productService.FindProductById(id, token);
             return View(model);
         }
 
@@ -53,7 +55,7 @@ namespace ShopJoaoDias.Web.Controllers
             {
                 Count = model.Count,
                 ProductId = model.Id,
-                Product = await _productService.FindProductById(model.Id, token),
+                Product = await _productService.FindProductById(model.Id, token)
             };
 
             List<CartDetailViewModel> cartDetails = new List<CartDetailViewModel>();
@@ -61,7 +63,7 @@ namespace ShopJoaoDias.Web.Controllers
             cart.CartDetails = cartDetails;
 
             var response = await _cartService.AddItemToCart(cart, token);
-            if (response != null)
+            if(response != null)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -73,23 +75,21 @@ namespace ShopJoaoDias.Web.Controllers
             return View();
         }
 
-        [Authorize]
-        public async Task<IActionResult> Login()
-        {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Logout()
-        {
-            return SignOut("Cookies", "oidc");
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Login()
+        {
+            var accessToken = await HttpContext.GetTokenAsync("access_token");
+            return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Logout()
+        {
+            return SignOut("Cookies", "oidc");
         }
     }
 }
