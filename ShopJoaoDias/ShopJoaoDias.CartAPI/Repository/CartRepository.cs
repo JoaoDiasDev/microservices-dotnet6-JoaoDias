@@ -14,6 +14,12 @@ namespace ShopJoaoDias.CartAPI.Repository
         private readonly MySQLContext _context;
         private IMapper _mapper;
 
+        public CartRepository(IMapper mapper, MySQLContext context)
+        {
+            _mapper = mapper;
+            _context = context;
+        }
+
         public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
             var header = await _context.CartHeaders

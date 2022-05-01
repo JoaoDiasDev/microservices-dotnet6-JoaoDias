@@ -42,7 +42,7 @@ namespace ShopJoaoDias.Web.Controllers
             {
                 return RedirectToAction(nameof(CartIndex));
             }
-            return View();
+            return RedirectToAction(nameof(ApplyCoupon));
         }
 
         [HttpPost]
@@ -58,7 +58,7 @@ namespace ShopJoaoDias.Web.Controllers
             {
                 return RedirectToAction(nameof(CartIndex));
             }
-            return View();
+            return RedirectToAction(nameof(RemoveCoupon));
         }
 
         public async Task<IActionResult> Remove(int id)
@@ -72,7 +72,7 @@ namespace ShopJoaoDias.Web.Controllers
             {
                 return RedirectToAction(nameof(CartIndex));
             }
-            return View();
+            return RedirectToAction(nameof(Remove));
         }
 
         [HttpGet]
@@ -88,23 +88,21 @@ namespace ShopJoaoDias.Web.Controllers
 
             var response = await _cartService.FindCartByUserId(userId, token);
 
-            if (response?.CartHeader != null)
+            if (response?.CartHeader == null) return response;
+            if (!string.IsNullOrEmpty(response.CartHeader.CouponCode))
             {
-                if (!string.IsNullOrEmpty(response.CartHeader.CouponCode))
+                var coupon = await _couponService.
+                    GetCoupon(response.CartHeader.CouponCode, token);
+                if (coupon?.CouponCode != null)
                 {
-                    var coupon = await _couponService.
-                        GetCoupon(response.CartHeader.CouponCode, token);
-                    if (coupon?.CouponCode != null)
-                    {
-                        response.CartHeader.DiscountAmount = coupon.DiscountAmount;
-                    }
+                    response.CartHeader.DiscountAmount = coupon.DiscountAmount;
                 }
-                foreach (var detail in response.CartDetails)
-                {
-                    response.CartHeader.PurchaseAmount += (detail.Product.Price * detail.Count);
-                }
-                response.CartHeader.PurchaseAmount -= response.CartHeader.DiscountAmount;
             }
+            foreach (var detail in response.CartDetails)
+            {
+                response.CartHeader.PurchaseAmount += (detail.Product.Price * detail.Count);
+            }
+            response.CartHeader.PurchaseAmount -= response.CartHeader.DiscountAmount;
             return response;
         }
     }

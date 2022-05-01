@@ -91,13 +91,13 @@
                         </div>
                         <div class="col-6 text-end">
                             <span class="text-danger" style="font-size:21px;">
-                                Purchase Amount: @string.Format("{0:c}", Model.CartHeader.PurchaseAmount)
+                                Purchase Amount: @($"{Model.CartHeader.PurchaseAmount:c}")
                                 <br/>
                             </span>
                             @if(Model.CartHeader.DiscountAmount > 0)
                             {
                                 <span class="text-success">
-                                    Discount Amount: @string.Format("{0:c}", Model.CartHeader.DiscountAmount)
+                                    Discount Amount: @($"{Model.CartHeader.DiscountAmount:c}")
                                     <br/>
                                 </span>
                             }
