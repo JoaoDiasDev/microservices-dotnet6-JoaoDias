@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShopJoaoDias.Web.Services;
 using ShopJoaoDias.Web.Services.IServices;
+using System;
 
 namespace ShopJoaoDias.Web
 {
@@ -35,18 +35,18 @@ namespace ShopJoaoDias.Web
                 options.DefaultChallengeScheme = "oidc";
             })
                 .AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
-                .AddOpenIdConnect("oidc", options => 
+                .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = Configuration["ServiceUrls:IdentityServer"];
                     options.GetClaimsFromUserInfoEndpoint = true;
-                    options.ClientId = "geek_shopping";
-                    options.ClientSecret = "my_super_secret";
+                    options.ClientId = "shop_joao_dias";
+                    options.ClientSecret = "super_secret_dias";
                     options.ResponseType = "code";
                     options.ClaimActions.MapJsonKey("role", "role", "role");
                     options.ClaimActions.MapJsonKey("sub", "sub", "sub");
                     options.TokenValidationParameters.NameClaimType = "name";
                     options.TokenValidationParameters.RoleClaimType = "role";
-                    options.Scope.Add("geek_shopping");
+                    options.Scope.Add("shop_joao_dias");
                     options.SaveTokens = true;
                 }
             );

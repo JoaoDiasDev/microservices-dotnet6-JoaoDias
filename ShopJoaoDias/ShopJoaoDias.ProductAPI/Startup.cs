@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using ShopJoaoDias.ProductAPI.Config;
 using ShopJoaoDias.ProductAPI.Model.Context;
 using ShopJoaoDias.ProductAPI.Repository;
+using System;
+using System.Collections.Generic;
 
 namespace ShopJoaoDias.ProductAPI
 {
@@ -33,7 +33,7 @@ namespace ShopJoaoDias.ProductAPI
                 UseMySql(connection,
                         new MySqlServerVersion(
                             new Version(8, 0, 5))));
-            
+
             IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
             services.AddSingleton(mapper);
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -63,18 +63,18 @@ namespace ShopJoaoDias.ProductAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.ProductAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopJoaoDias.ProductAPI", Version = "v1" });
                 c.EnableAnnotations();
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = @"Enter 'Bearer' [space] and your token!",
+                    Description = @"Enter 'Bearer' [space] amd your token!",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
                     Scheme = "Bearer"
                 });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement{
                     {
                         new OpenApiSecurityScheme
                         {
@@ -83,11 +83,11 @@ namespace ShopJoaoDias.ProductAPI
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             },
-                            Scheme = "oauth2",
+                            Scheme = "ouath2",
                             Name = "Bearer",
-                            In= ParameterLocation.Header
+                            In = ParameterLocation.Header
                         },
-                        new List<string> ()
+                        new List<string>()
                     }
                 });
             });
@@ -100,7 +100,7 @@ namespace ShopJoaoDias.ProductAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShopping.ProductAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopJoaoDias.ProductAPI v1"));
             }
 
             app.UseHttpsRedirection();
