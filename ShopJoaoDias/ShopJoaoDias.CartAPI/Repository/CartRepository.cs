@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ShopJoaoDias.CartAPI.Data.ValueObjects;
 using ShopJoaoDias.CartAPI.Model;
@@ -67,7 +70,7 @@ namespace ShopJoaoDias.CartAPI.Repository
                     .Where(c => c.CartHeaderId == cartDetail.CartHeaderId).Count();
 
                 _context.CartDetails.Remove(cartDetail);
-
+                
                 if (total == 1)
                 {
                     var cartHeaderToRemove = await _context.CartHeaders
@@ -89,7 +92,7 @@ namespace ShopJoaoDias.CartAPI.Repository
             //Checks if the product is already saved in the database if it does not exist then save
             var product = await _context.Products.FirstOrDefaultAsync(
                 p => p.Id == vo.CartDetails.FirstOrDefault().ProductId);
-
+            
             if (product == null)
             {
                 _context.Products.Add(cart.CartDetails.FirstOrDefault().Product);
@@ -136,7 +139,7 @@ namespace ShopJoaoDias.CartAPI.Repository
                     cart.CartDetails.FirstOrDefault().CartHeaderId = cartDetail.CartHeaderId;
                     _context.CartDetails.Update(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
-                }
+                } 
             }
             return _mapper.Map<CartVO>(cart);
         }

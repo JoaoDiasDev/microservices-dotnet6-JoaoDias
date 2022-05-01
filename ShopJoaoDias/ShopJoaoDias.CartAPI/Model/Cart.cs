@@ -1,4 +1,6 @@
-﻿namespace ShopJoaoDias.CartAPI.Model
+﻿using System.Collections.Generic;
+
+namespace ShopJoaoDias.CartAPI.Model
 {
     public class Cart
     {

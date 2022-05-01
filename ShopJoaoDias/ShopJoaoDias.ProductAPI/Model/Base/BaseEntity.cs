@@ -5,6 +5,7 @@ namespace ShopJoaoDias.ProductAPI.Model.Base
 {
     public class BaseEntity
     {
+
         [Key]
         [Column("id")]
         public long Id { get; set; }

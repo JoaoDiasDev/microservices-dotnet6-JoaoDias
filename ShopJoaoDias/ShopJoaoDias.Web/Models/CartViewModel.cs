@@ -1,4 +1,6 @@
-﻿namespace ShopJoaoDias.Web.Models
+﻿using System.Collections.Generic;
+
+namespace ShopJoaoDias.Web.Models
 {
     public class CartViewModel
     {

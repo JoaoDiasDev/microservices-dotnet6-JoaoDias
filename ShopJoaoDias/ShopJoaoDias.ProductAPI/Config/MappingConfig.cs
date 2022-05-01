@@ -8,9 +8,9 @@ namespace ShopJoaoDias.ProductAPI.Config
     {
         public static MapperConfiguration RegisterMaps()
         {
-            var mappingConfig = new MapperConfiguration(config =>
-            {
-                config.CreateMap<ProductVO, Product>().ReverseMap();
+            var mappingConfig = new MapperConfiguration(config => {
+                config.CreateMap<ProductVO, Product>();
+                config.CreateMap<Product, ProductVO>();
             });
             return mappingConfig;
         }

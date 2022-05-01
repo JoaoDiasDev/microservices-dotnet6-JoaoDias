@@ -1,6 +1,6 @@
-﻿using ShopJoaoDias.ProductAPI.Model.Base;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ShopJoaoDias.ProductAPI.Model.Base;
 
 namespace ShopJoaoDias.ProductAPI.Model
 {
@@ -14,7 +14,7 @@ namespace ShopJoaoDias.ProductAPI.Model
 
         [Column("price")]
         [Required]
-        [Range(1, 10000)]
+        [Range(1,10000)]
         public decimal Price { get; set; }
 
         [Column("description")]

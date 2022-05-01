@@ -1,4 +1,6 @@
-﻿using ShopJoaoDias.Web.Models;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using ShopJoaoDias.Web.Models;
 
 namespace ShopJoaoDias.Web.Services.IServices
 {

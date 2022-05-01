@@ -1,4 +1,5 @@
-﻿using ShopJoaoDias.Web.Models;
+﻿using System.Threading.Tasks;
+using ShopJoaoDias.Web.Models;
 
 namespace ShopJoaoDias.Web.Services.IServices
 {
@@ -14,5 +15,5 @@ namespace ShopJoaoDias.Web.Services.IServices
         Task<bool> ClearCart(string userId, string token);
 
         Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token);
-    }
+     }
 }

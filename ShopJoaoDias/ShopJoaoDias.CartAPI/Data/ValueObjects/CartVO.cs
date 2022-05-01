@@ -1,4 +1,6 @@
-﻿namespace ShopJoaoDias.CartAPI.Data.ValueObjects
+﻿using System.Collections.Generic;
+
+namespace ShopJoaoDias.CartAPI.Data.ValueObjects
 {
     public class CartVO
     {

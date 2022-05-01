@@ -1,3 +1,5 @@
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.CartAPI.Data.ValueObjects;
 using ShopJoaoDias.CartAPI.Repository;

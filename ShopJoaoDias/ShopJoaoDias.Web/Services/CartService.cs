@@ -1,7 +1,10 @@
-﻿using ShopJoaoDias.Web.Models;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using ShopJoaoDias.Web.Models;
 using ShopJoaoDias.Web.Services.IServices;
 using ShopJoaoDias.Web.Utils;
-using System.Net.Http.Headers;
 
 namespace ShopJoaoDias.Web.Services
 {

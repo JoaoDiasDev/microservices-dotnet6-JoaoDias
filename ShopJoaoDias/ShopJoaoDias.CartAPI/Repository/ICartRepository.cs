@@ -1,4 +1,5 @@
-﻿using ShopJoaoDias.CartAPI.Data.ValueObjects;
+﻿using System.Threading.Tasks;
+using ShopJoaoDias.CartAPI.Data.ValueObjects;
 
 namespace ShopJoaoDias.CartAPI.Repository
 {

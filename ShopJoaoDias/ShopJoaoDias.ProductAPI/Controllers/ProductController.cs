@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.ProductAPI.Data.ValueObjects;
 using ShopJoaoDias.ProductAPI.Repository;
@@ -14,19 +17,19 @@ namespace ShopJoaoDias.ProductAPI.Controllers
 
         public ProductController(IProductRepository repository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _repository = repository ?? throw new
+                ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductVO>>> FindAll()
         {
             var products = await _repository.FindAll();
-            if (products == null) return NotFound();
             return Ok(products);
         }
 
+        [HttpGet("{id}")]
         [Authorize]
-        [HttpGet("{id:long}")]
         public async Task<ActionResult<ProductVO>> FindById(long id)
         {
             var product = await _repository.FindById(id);
@@ -34,26 +37,26 @@ namespace ShopJoaoDias.ProductAPI.Controllers
             return Ok(product);
         }
 
-        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<ProductVO>> FindById([FromBody] ProductVO productVo)
-        {
-            if (productVo == null) return BadRequest();
-            var product = await _repository.Create(productVo);
-            return Ok(product);
-        }
-
         [Authorize]
-        [HttpPut]
-        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO productVo)
+        public async Task<ActionResult<ProductVO>> Create([FromBody] ProductVO vo)
         {
-            if (productVo == null) return BadRequest();
-            var product = await _repository.Update(productVo);
+            if (vo == null) return BadRequest();
+            var product = await _repository.Create(vo);
             return Ok(product);
         }
 
+        [HttpPut]
+        [Authorize]
+        public async Task<ActionResult<ProductVO>> Update([FromBody] ProductVO vo)
+        {
+            if (vo == null) return BadRequest();
+            var product = await _repository.Update(vo);
+            return Ok(product);
+        }
+
+        [HttpDelete("{id}")]
         [Authorize(Roles = Role.Admin)]
-        [HttpDelete("{id:long}")]
         public async Task<ActionResult> Delete(long id)
         {
             var status = await _repository.Delete(id);

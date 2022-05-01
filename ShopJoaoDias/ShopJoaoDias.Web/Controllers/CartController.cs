@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.Web.Models;
@@ -31,13 +33,13 @@ namespace ShopJoaoDias.Web.Controllers
 
             var response = await _cartService.RemoveFromCart(id, token);
 
-            if (response)
+            if(response)
             {
                 return RedirectToAction(nameof(CartIndex));
             }
             return View();
         }
-
+                
         private async Task<CartViewModel> FindUserCart()
         {
             var token = await HttpContext.GetTokenAsync("access_token");
