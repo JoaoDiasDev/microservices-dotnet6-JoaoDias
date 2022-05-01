@@ -8,7 +8,7 @@ namespace ShopJoaoDias.Web.Services
     public class ProductService : IProductService
     {
         private readonly HttpClient _client;
-        private const string BasePath = "api/v1/product";
+        public const string BasePath = "api/v1/product";
 
         public ProductService(HttpClient client)
         {
@@ -34,21 +34,16 @@ namespace ShopJoaoDias.Web.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.PostAsJson(BasePath, model);
             if (response.IsSuccessStatusCode)
-            {
                 return await response.ReadContentAs<ProductViewModel>();
-            }
-            throw new Exception("Something went wrong when calling API");
+            else throw new Exception("Something went wrong when calling API");
         }
-
         public async Task<ProductViewModel> UpdateProduct(ProductViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.PutAsJson(BasePath, model);
             if (response.IsSuccessStatusCode)
-            {
                 return await response.ReadContentAs<ProductViewModel>();
-            }
-            throw new Exception("Something went wrong when calling API");
+            else throw new Exception("Something went wrong when calling API");
         }
 
         public async Task<bool> DeleteProductById(long id, string token)
@@ -56,11 +51,8 @@ namespace ShopJoaoDias.Web.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.DeleteAsync($"{BasePath}/{id}");
             if (response.IsSuccessStatusCode)
-            {
                 return await response.ReadContentAs<bool>();
-            }
-
-            throw new Exception("Something went wrong when calling API");
+            else throw new Exception("Something went wrong when calling API");
         }
     }
 }

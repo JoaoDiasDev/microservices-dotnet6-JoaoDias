@@ -6,7 +6,7 @@ namespace ShopJoaoDias.Web.Utils
     public static class HttpClientExtensions
     {
         private static MediaTypeHeaderValue _contentType
-            = new("application/problem+json");
+            = new("application/json");
         public static async Task<T> ReadContentAs<T>(
             this HttpResponseMessage response)
         {

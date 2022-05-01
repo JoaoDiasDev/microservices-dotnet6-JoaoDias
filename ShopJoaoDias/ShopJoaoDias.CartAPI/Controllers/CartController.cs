@@ -12,11 +12,12 @@ namespace ShopJoaoDias.CartAPI.Controllers
 
         public CartController(ICartRepository repository)
         {
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _repository = repository ?? throw new
+                ArgumentNullException(nameof(repository));
         }
 
         [HttpGet("find-cart/{id}")]
-        public async Task<ActionResult<IEnumerable<CartVO>>> FindAll(string id)
+        public async Task<ActionResult<CartVO>> FindById(string id)
         {
             var cart = await _repository.FindCartByUserId(id);
             if (cart == null) return NotFound();
@@ -40,7 +41,7 @@ namespace ShopJoaoDias.CartAPI.Controllers
         }
 
         [HttpDelete("remove-cart/{id}")]
-        public async Task<ActionResult<CartVO>> UpdateCart(int id)
+        public async Task<ActionResult<CartVO>> RemoveCart(int id)
         {
             var status = await _repository.RemoveFromCart(id);
             if (!status) return BadRequest();

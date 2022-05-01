@@ -49,14 +49,14 @@ namespace ShopJoaoDias.Web.Controllers
                 }
             };
 
-            var cartDetail = new CartDetailViewModel()
+            CartDetailViewModel cartDetail = new CartDetailViewModel()
             {
                 Count = model.Count,
                 ProductId = model.Id,
                 Product = await _productService.FindProductById(model.Id, token),
             };
 
-            var cartDetails = new List<CartDetailViewModel>();
+            List<CartDetailViewModel> cartDetails = new List<CartDetailViewModel>();
             cartDetails.Add(cartDetail);
             cart.CartDetails = cartDetails;
 

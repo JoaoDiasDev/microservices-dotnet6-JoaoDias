@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopJoaoDias.CartAPI.Model
@@ -16,6 +17,7 @@ namespace ShopJoaoDias.CartAPI.Model
         public string Name { get; set; }
 
         [Column("price")]
+        [Precision(18, 2)]
         [Required]
         [Range(1, 10000)]
         public decimal Price { get; set; }
