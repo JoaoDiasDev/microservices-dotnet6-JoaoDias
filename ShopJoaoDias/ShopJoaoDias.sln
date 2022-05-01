@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopJoaoDias.IdentityServer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopJoaoDias.CartAPI", "ShopJoaoDias.CartAPI\ShopJoaoDias.CartAPI.csproj", "{CF639DBE-D6AF-45FD-A88A-66B65CE101E4}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopJoaoDias.CouponAPI", "ShopJoaoDias.CouponAPI\ShopJoaoDias.CouponAPI.csproj", "{2A0B1BC2-EF3D-4220-B029-5AFF2AE31C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{CF639DBE-D6AF-45FD-A88A-66B65CE101E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF639DBE-D6AF-45FD-A88A-66B65CE101E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF639DBE-D6AF-45FD-A88A-66B65CE101E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A0B1BC2-EF3D-4220-B029-5AFF2AE31C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A0B1BC2-EF3D-4220-B029-5AFF2AE31C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A0B1BC2-EF3D-4220-B029-5AFF2AE31C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A0B1BC2-EF3D-4220-B029-5AFF2AE31C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,6 +52,7 @@ Global
 		{EDD6EF86-1C79-4D89-B2C0-D8D69A1A8E0B} = {BE8F341D-1378-4B40-88F9-6901B74F17C3}
 		{D814E460-98EE-4956-AD23-93FB232CE206} = {BE8F341D-1378-4B40-88F9-6901B74F17C3}
 		{CF639DBE-D6AF-45FD-A88A-66B65CE101E4} = {BE8F341D-1378-4B40-88F9-6901B74F17C3}
+		{2A0B1BC2-EF3D-4220-B029-5AFF2AE31C98} = {BE8F341D-1378-4B40-88F9-6901B74F17C3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {44782F14-DB85-4BF3-BFEA-254F451A02FA}

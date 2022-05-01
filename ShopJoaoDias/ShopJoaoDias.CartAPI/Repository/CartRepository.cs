@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ShopJoaoDias.CartAPI.Data.ValueObjects;
 using ShopJoaoDias.CartAPI.Model;
 using ShopJoaoDias.CartAPI.Model.Context;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShopJoaoDias.CartAPI.Repository
 {
@@ -14,15 +14,32 @@ namespace ShopJoaoDias.CartAPI.Repository
         private readonly MySQLContext _context;
         private IMapper _mapper;
 
-        public CartRepository(MySQLContext context, IMapper mapper)
-        {
-            _context = context;
-            _mapper = mapper;
-        }
-
         public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
-            throw new NotImplementedException();
+            var header = await _context.CartHeaders
+                        .FirstOrDefaultAsync(c => c.UserId == userId);
+            if (header != null)
+            {
+                header.CouponCode = couponCode;
+                _context.CartHeaders.Update(header);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> RemoveCoupon(string userId)
+        {
+            var header = await _context.CartHeaders
+                        .FirstOrDefaultAsync(c => c.UserId == userId);
+            if (header != null)
+            {
+                header.CouponCode = "";
+                _context.CartHeaders.Update(header);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> ClearCart(string userId)
@@ -54,11 +71,6 @@ namespace ShopJoaoDias.CartAPI.Repository
             return _mapper.Map<CartVO>(cart);
         }
 
-        public async Task<bool> RemoveCoupon(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<bool> RemoveFromCart(long cartDetailsId)
         {
             try
@@ -70,7 +82,7 @@ namespace ShopJoaoDias.CartAPI.Repository
                     .Where(c => c.CartHeaderId == cartDetail.CartHeaderId).Count();
 
                 _context.CartDetails.Remove(cartDetail);
-                
+
                 if (total == 1)
                 {
                     var cartHeaderToRemove = await _context.CartHeaders
@@ -92,7 +104,7 @@ namespace ShopJoaoDias.CartAPI.Repository
             //Checks if the product is already saved in the database if it does not exist then save
             var product = await _context.Products.FirstOrDefaultAsync(
                 p => p.Id == vo.CartDetails.FirstOrDefault().ProductId);
-            
+
             if (product == null)
             {
                 _context.Products.Add(cart.CartDetails.FirstOrDefault().Product);
@@ -139,7 +151,7 @@ namespace ShopJoaoDias.CartAPI.Repository
                     cart.CartDetails.FirstOrDefault().CartHeaderId = cartDetail.CartHeaderId;
                     _context.CartDetails.Update(cart.CartDetails.FirstOrDefault());
                     await _context.SaveChangesAsync();
-                } 
+                }
             }
             return _mapper.Map<CartVO>(cart);
         }

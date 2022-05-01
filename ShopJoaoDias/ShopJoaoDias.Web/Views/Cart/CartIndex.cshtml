@@ -1,6 +1,6 @@
 ﻿@model ShopJoaoDias.Web.Models.CartViewModel
 
-@if (Model.CartHeader != null && Model.CartDetails.Any())
+@if (Model.CartHeader != null && Model.CartDetails.Count() > 0)
 {
     <form method="post">
         <br/>
@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
                             <span style="font-size:17px;">
-                                @($"{item.Product.Price:c}")
+                                @string.Format("{0:c}", item.Product.Price)
                             </span>
                         </div>
                         <div class="col-3 col-md-2 pt-md-4" style="font-size:11px;">
@@ -72,17 +72,35 @@
                     }                   
                     <div class="row">
                         <div class="col-6">
-                            <span>Coupon:</span>
-                            <input asp-for="CartHeader.CouponCode"/>
-                            <button type="submit" asp-action="ApplyCoupon" class="btn-success">
-                                Apply
-                            </button>
+                            @if(string.IsNullOrEmpty(Model.CartHeader.CouponCode))
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CouponCode" />
+                                <button type="submit" asp-action="ApplyCoupon" class="btn-success">
+                                    Apply
+                                </button>
+                            }
+                            else
+                            {
+                                <span>Coupon:</span>
+                                <input asp-for="CartHeader.CouponCode" disabled />
+                                <button type="submit" asp-action="RemoveCoupon" class="btn-danger">
+                                    Remove
+                                </button>
+                            }
                         </div>
                         <div class="col-6 text-end">
                             <span class="text-danger" style="font-size:21px;">
-                                Purchase Amount: @($"{Model.CartHeader.PurchaseAmount:c}")
+                                Purchase Amount: @string.Format("{0:c}", Model.CartHeader.PurchaseAmount)
                                 <br/>
                             </span>
+                            @if(Model.CartHeader.DiscountAmount > 0)
+                            {
+                                <span class="text-success">
+                                    Discount Amount: @string.Format("{0:c}", Model.CartHeader.DiscountAmount)
+                                    <br/>
+                                </span>
+                            }
                         </div>
                     </div>
                 </div>
@@ -102,6 +120,6 @@
 else
 {
     <div>
-        <p>Yor Cart is Empty!</p>
+        <p>Your Cart is Empty!</p>
     </div>
 }

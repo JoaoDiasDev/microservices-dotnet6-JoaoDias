@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.CartAPI.Data.ValueObjects;
 using ShopJoaoDias.CartAPI.Repository;
+using System;
+using System.Threading.Tasks;
 
 namespace ShopJoaoDias.CartAPI.Controllers
 {
@@ -47,6 +47,22 @@ namespace ShopJoaoDias.CartAPI.Controllers
         {
             var status = await _repository.RemoveFromCart(id);
             if (!status) return BadRequest();
+            return Ok(status);
+        }
+
+        [HttpPost("apply-coupon")]
+        public async Task<ActionResult<CartVO>> ApplyCoupon(CartVO vo)
+        {
+            var status = await _repository.ApplyCoupon(vo.CartHeader.UserId, vo.CartHeader.CouponCode);
+            if (!status) return NotFound();
+            return Ok(status);
+        }
+
+        [HttpDelete("remove-coupon/{userId}")]
+        public async Task<ActionResult<CartVO>> ApplyCoupon(string userId)
+        {
+            var status = await _repository.RemoveCoupon(userId);
+            if (!status) return NotFound();
             return Ok(status);
         }
     }
