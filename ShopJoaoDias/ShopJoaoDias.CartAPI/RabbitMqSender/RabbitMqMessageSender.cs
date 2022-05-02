@@ -15,9 +15,9 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
 
         public RabbitMqMessageSender()
         {
-            _userName = "guest";
-            _password = "guest";
             _hostName = "localhost";
+            _password = "guest";
+            _userName = "guest";
         }
 
         public void SendMessage(BaseMessage message, string queueName)
@@ -25,15 +25,16 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
             var factory = new ConnectionFactory
             {
                 HostName = _hostName,
-                Password = _password,
                 UserName = _userName,
+                Password = _password
             };
             _connection = factory.CreateConnection();
 
             using var channel = _connection.CreateModel();
             channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
-            var body = GetMessageAsByteArray(message);
-            channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+            byte[] body = GetMessageAsByteArray(message);
+            channel.BasicPublish(
+                exchange: "", routingKey: queueName, basicProperties: null, body: body);
         }
 
         private byte[] GetMessageAsByteArray(BaseMessage message)

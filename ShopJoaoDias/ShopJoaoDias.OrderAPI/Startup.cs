@@ -1,20 +1,11 @@
-using AutoMapper;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ShopJoaoDias.CartAPI.Config;
-using ShopJoaoDias.CartAPI.Model.Context;
-using ShopJoaoDias.CartAPI.RabbitMqSender;
-using ShopJoaoDias.CartAPI.Repository;
-using System;
-using System.Collections.Generic;
+using ShopJoaoDias.OrderAPI.MessageConsumer;
+using ShopJoaoDias.OrderAPI.Model.Context;
+using ShopJoaoDias.OrderAPI.Repository;
 
-namespace GeekShopping.CartAPI
+namespace ShopJoaoDias.OrderAPI
 {
     public class Startup
     {
@@ -23,7 +14,7 @@ namespace GeekShopping.CartAPI
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -35,13 +26,13 @@ namespace GeekShopping.CartAPI
                         new MySqlServerVersion(
                             new Version(8, 0, 5))));
 
-            IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
-            services.AddSingleton(mapper);
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            var builder = new DbContextOptionsBuilder<MySQLContext>();
+            builder.UseMySql(connection, new MySqlServerVersion(
+                new Version(8, 0, 5)));
 
-            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddSingleton(new OrderRepository(builder.Options));
 
-            services.AddSingleton<IRabbitMqMessageSender, RabbitMqMessageSender>();
+            services.AddHostedService<RabbitMqCheckoutConsumer>();
 
             services.AddControllers();
 
@@ -66,7 +57,7 @@ namespace GeekShopping.CartAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopJoaoDias.CartAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopJoaoDias.OrderAPI", Version = "v1" });
                 c.EnableAnnotations();
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -103,7 +94,7 @@ namespace GeekShopping.CartAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopJoaoDias.CartAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopJoaoDias.OrderAPI v1"));
             }
 
             app.UseHttpsRedirection();

@@ -72,7 +72,7 @@
                                     <span style="font-size:20px;">@item.Product.Name</span>
                                 </div>
                                 <div class="col-3">
-                                    <span style="font-size:17px;">@string.Format("{0:c}", item.Product.Price)</span>
+                                    <span style="font-size:17px;">@($"{item.Product.Price:c}")</span>
                                 </div>
                                 <div class="col-3">
                                     <span style="font-size:17px;">@item.Count

@@ -15,11 +15,13 @@ namespace ShopJoaoDias.CartAPI.Controllers
         private ICartRepository _repository;
         private IRabbitMqMessageSender _rabbitMqMessageSender;
 
-        public CartController(ICartRepository repository, IRabbitMqMessageSender rabbitMqMessageSender)
+        public CartController(ICartRepository repository,
+            IRabbitMqMessageSender rabbitMqMessageSender)
         {
-            _repository = repository ?? throw new
-                ArgumentNullException(nameof(repository));
-            _rabbitMqMessageSender = rabbitMqMessageSender ?? throw new ArgumentNullException(nameof(rabbitMqMessageSender));
+            _repository = repository
+                ?? throw new ArgumentNullException(nameof(repository));
+            _rabbitMqMessageSender = rabbitMqMessageSender
+                ?? throw new ArgumentNullException(nameof(rabbitMqMessageSender));
         }
 
         [HttpGet("find-cart/{id}")]
@@ -63,7 +65,7 @@ namespace ShopJoaoDias.CartAPI.Controllers
         }
 
         [HttpDelete("remove-coupon/{userId}")]
-        public async Task<ActionResult<CartVO>> RemoveCoupon(string userId)
+        public async Task<ActionResult<CartVO>> ApplyCoupon(string userId)
         {
             var status = await _repository.RemoveCoupon(userId);
             if (!status) return NotFound();
@@ -79,6 +81,7 @@ namespace ShopJoaoDias.CartAPI.Controllers
             vo.CartDetails = cart.CartDetails;
             vo.DateTime = DateTime.Now;
 
+            // RabbitMQ logic comes here!!!
             _rabbitMqMessageSender.SendMessage(vo, "checkout_queue");
 
             return Ok(vo);
