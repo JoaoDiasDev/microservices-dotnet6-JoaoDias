@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ShopJoaoDias.CartAPI.Config;
 using ShopJoaoDias.CartAPI.Model.Context;
+using ShopJoaoDias.CartAPI.RabbitMqSender;
 using ShopJoaoDias.CartAPI.Repository;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,7 @@ namespace GeekShopping.CartAPI
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<ICartRepository, CartRepository>();
+            services.AddSingleton<IRabbitMqMessageSender, RabbitMqMessageSender>();
 
             services.AddControllers();
 
