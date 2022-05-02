@@ -16,8 +16,8 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
         public RabbitMqMessageSender()
         {
             _hostName = "localhost";
-            _password = "guest";
-            _userName = "guest";
+            _password = "admin";
+            _userName = "admin";
         }
 
         public void SendMessage(BaseMessage message, string queueName)

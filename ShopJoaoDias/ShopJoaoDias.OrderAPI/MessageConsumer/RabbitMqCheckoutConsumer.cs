@@ -14,14 +14,14 @@ namespace ShopJoaoDias.OrderAPI.MessageConsumer
         private IConnection _connection;
         private IModel _channel;
 
-        public RabbitMqCheckoutConsumer(OrderRepository repository, IConnection connection, IModel channel)
+        public RabbitMqCheckoutConsumer(OrderRepository repository)
         {
             _repository = repository;
             var factory = new ConnectionFactory
             {
                 HostName = "localhost",
-                UserName = "guest",
-                Password = "guest",
+                UserName = "admin",
+                Password = "admin",
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
