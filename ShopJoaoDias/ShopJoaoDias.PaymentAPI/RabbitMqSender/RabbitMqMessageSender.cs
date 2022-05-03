@@ -1,19 +1,18 @@
 ﻿using Microsoft.AspNetCore.Connections;
 using RabbitMQ.Client;
-using ShopJoaoDias.CartAPI.Messages;
 using ShopJoaoDias.MessageBus;
-using System;
+using ShopJoaoDias.PaymentAPI.Messages;
 using System.Text;
 using System.Text.Json;
 
-namespace ShopJoaoDias.CartAPI.RabbitMqSender
+namespace ShopJoaoDias.PaymentAPI.RabbitMqSender
 {
     public class RabbitMqMessageSender : IRabbitMqMessageSender
     {
         private readonly string _hostName;
         private readonly string _password;
         private readonly string _userName;
-        private IConnection _connection;
+        private IConnection? _connection;
 
         public RabbitMqMessageSender()
         {
@@ -25,8 +24,8 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
         public void SendMessage(BaseMessage message, string queueName)
         {
             if (!ConnectionExists()) return;
-            using var channel = _connection.CreateModel();
-            channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
+            using var channel = _connection?.CreateModel();
+            channel?.QueueDeclare(queue: queueName, false, false, false, arguments: null);
             var body = GetMessageAsByteArray(message);
             channel.BasicPublish(
                 exchange: "", routingKey: queueName, basicProperties: null, body: body);
@@ -38,14 +37,14 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
             {
                 WriteIndented = true,
             };
-            var json = JsonSerializer.Serialize((CheckoutHeaderVO)message, options);
+            var json = JsonSerializer.Serialize((UpdatePaymentResultMessage)message, options);
             var body = Encoding.UTF8.GetBytes(json);
             return body;
         }
 
         private bool ConnectionExists()
         {
-            if (_connection != null) return true;
+            if (_connection == null) return true;
             CreateConnection();
             return _connection != null;
         }

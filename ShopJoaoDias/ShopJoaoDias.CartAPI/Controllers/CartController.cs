@@ -18,9 +18,9 @@ namespace ShopJoaoDias.CartAPI.Controllers
 
         public CartController(ICouponRepository couponRepository, ICartRepository cartRepository, IRabbitMqMessageSender rabbitMqMessageSender)
         {
-            _couponRepository = couponRepository;
-            _cartRepository = cartRepository;
-            _rabbitMqMessageSender = rabbitMqMessageSender;
+            _cartRepository = cartRepository ?? throw new ArgumentNullException(nameof(cartRepository));
+            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));
+            _rabbitMqMessageSender = rabbitMqMessageSender ?? throw new ArgumentNullException(nameof(rabbitMqMessageSender));
         }
 
 
@@ -91,6 +91,8 @@ namespace ShopJoaoDias.CartAPI.Controllers
             vo.DateTime = DateTime.Now;
 
             _rabbitMqMessageSender.SendMessage(vo, "checkout_queue");
+
+            await _cartRepository.ClearCart(vo.UserId);
 
             return Ok(vo);
         }

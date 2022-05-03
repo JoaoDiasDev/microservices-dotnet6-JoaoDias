@@ -21,10 +21,11 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\ShopJoaoDias.MessageBus\ShopJoaoDias.MessageBus.csproj" />
+		<ProjectReference Include="..\ShopJoaoDias.PaymentProcessor\ShopJoaoDias.PaymentProcessor.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Controllers\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+  </ItemGroup>
 
 </Project>

@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ShopJoaoDias.OrderAPI.MessageConsumer;
-using ShopJoaoDias.OrderAPI.Model.Context;
-using ShopJoaoDias.OrderAPI.RabbitMqSender;
-using ShopJoaoDias.OrderAPI.Repository;
+using ShopJoaoDias.PaymentAPI.MessageConsumer;
+using ShopJoaoDias.PaymentAPI.RabbitMqSender;
+using ShopJoaoDias.PaymentProcessor;
 
-namespace ShopJoaoDias.OrderAPI
+namespace ShopJoaoDias.PaymentAPI
 {
     public class Startup
     {
@@ -20,21 +18,8 @@ namespace ShopJoaoDias.OrderAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = Configuration["MySQlConnection:MySQlConnectionString"];
-
-            services.AddDbContext<MySQLContext>(options => options.
-                UseMySql(connection,
-                        new MySqlServerVersion(
-                            new Version(8, 0, 5))));
-
-            var builder = new DbContextOptionsBuilder<MySQLContext>();
-            builder.UseMySql(connection, new MySqlServerVersion(
-                new Version(8, 0, 5)));
-
-            services.AddSingleton(new OrderRepository(builder.Options));
-
-            services.AddHostedService<RabbitMqCheckoutConsumer>();
             services.AddHostedService<RabbitMqPaymentConsumer>();
+            services.AddSingleton<IProcessPayment, ProcessPayment>();
             services.AddSingleton<IRabbitMqMessageSender, RabbitMqMessageSender>();
 
             services.AddControllers();
@@ -60,7 +45,7 @@ namespace ShopJoaoDias.OrderAPI
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopJoaoDias.OrderAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ShopJoaoDias.PaymentAPI", Version = "v1" });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"Enter 'Bearer' [space] and your token!",
@@ -96,7 +81,7 @@ namespace ShopJoaoDias.OrderAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopJoaoDias.OrderAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopJoaoDias.PaymentAPI v1"));
             }
 
             app.UseHttpsRedirection();

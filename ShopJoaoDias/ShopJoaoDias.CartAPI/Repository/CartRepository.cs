@@ -51,12 +51,12 @@ namespace ShopJoaoDias.CartAPI.Repository
         public async Task<bool> ClearCart(string userId)
         {
             var cartHeader = await _context.CartHeaders
-                        .FirstOrDefaultAsync(c => c.UserId == userId);
+                .FirstOrDefaultAsync(c => c.UserId == userId);
             if (cartHeader != null)
             {
                 _context.CartDetails
                     .RemoveRange(
-                    _context.CartDetails.Where(c => c.CartHeaderId == cartHeader.Id));
+                        _context.CartDetails.Where(c => c.CartHeaderId == cartHeader.Id));
                 _context.CartHeaders.Remove(cartHeader);
                 await _context.SaveChangesAsync();
                 return true;
@@ -69,7 +69,7 @@ namespace ShopJoaoDias.CartAPI.Repository
             Cart cart = new()
             {
                 CartHeader = await _context.CartHeaders
-                    .FirstOrDefaultAsync(c => c.UserId == userId),
+                    .FirstOrDefaultAsync(c => c.UserId == userId) ?? new CartHeader(),
             };
             cart.CartDetails = _context.CartDetails
                 .Where(c => c.CartHeaderId == cart.CartHeader.Id)
@@ -81,11 +81,10 @@ namespace ShopJoaoDias.CartAPI.Repository
         {
             try
             {
-                CartDetail cartDetail = await _context.CartDetails
+                var cartDetail = await _context.CartDetails
                     .FirstOrDefaultAsync(c => c.Id == cartDetailsId);
 
-                int total = _context.CartDetails
-                    .Where(c => c.CartHeaderId == cartDetail.CartHeaderId).Count();
+                var total = _context.CartDetails.Count(c => c.CartHeaderId == cartDetail.CartHeaderId);
 
                 _context.CartDetails.Remove(cartDetail);
 
@@ -106,7 +105,7 @@ namespace ShopJoaoDias.CartAPI.Repository
 
         public async Task<CartVO> SaveOrUpdateCart(CartVO vo)
         {
-            Cart cart = _mapper.Map<Cart>(vo);
+            var cart = _mapper.Map<Cart>(vo);
             //Checks if the product is already saved in the database if it does not exist then save
             var product = await _context.Products.FirstOrDefaultAsync(
                 p => p.Id == vo.CartDetails.FirstOrDefault().ProductId);

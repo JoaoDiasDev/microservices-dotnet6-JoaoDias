@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ShopJoaoDias.CouponAPI.Data.ValueObjects;
 using ShopJoaoDias.CouponAPI.Repository;
 
@@ -9,7 +8,7 @@ namespace ShopJoaoDias.CouponAPI.Controllers
     [ApiController]
     public class CouponController : ControllerBase
     {
-        private ICouponRepository _repository;
+        private readonly ICouponRepository _repository;
 
         public CouponController(ICouponRepository repository)
         {
@@ -18,7 +17,6 @@ namespace ShopJoaoDias.CouponAPI.Controllers
         }
 
         [HttpGet("{couponCode}")]
-        [Authorize]
         public async Task<ActionResult<CouponVO>> GetCouponByCouponCode(string couponCode)
         {
             var coupon = await _repository.GetCouponByCouponCode(couponCode);

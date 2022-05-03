@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Connections;
 using RabbitMQ.Client;
-using ShopJoaoDias.CartAPI.Messages;
 using ShopJoaoDias.MessageBus;
-using System;
+using ShopJoaoDias.OrderAPI.Messages;
 using System.Text;
 using System.Text.Json;
 
-namespace ShopJoaoDias.CartAPI.RabbitMqSender
+namespace ShopJoaoDias.OrderAPI.RabbitMqSender
 {
     public class RabbitMqMessageSender : IRabbitMqMessageSender
     {
@@ -27,7 +26,7 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
             if (!ConnectionExists()) return;
             using var channel = _connection.CreateModel();
             channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
-            var body = GetMessageAsByteArray(message);
+            byte[] body = GetMessageAsByteArray(message);
             channel.BasicPublish(
                 exchange: "", routingKey: queueName, basicProperties: null, body: body);
         }
@@ -38,14 +37,14 @@ namespace ShopJoaoDias.CartAPI.RabbitMqSender
             {
                 WriteIndented = true,
             };
-            var json = JsonSerializer.Serialize((CheckoutHeaderVO)message, options);
+            var json = JsonSerializer.Serialize((PaymentVO)message, options);
             var body = Encoding.UTF8.GetBytes(json);
             return body;
         }
 
         private bool ConnectionExists()
         {
-            if (_connection != null) return true;
+            if (_connection == null) return true;
             CreateConnection();
             return _connection != null;
         }

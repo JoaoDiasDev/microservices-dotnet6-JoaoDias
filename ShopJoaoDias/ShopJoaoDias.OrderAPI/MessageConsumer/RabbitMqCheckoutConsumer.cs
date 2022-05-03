@@ -2,6 +2,7 @@
 using RabbitMQ.Client.Events;
 using ShopJoaoDias.OrderAPI.Messages;
 using ShopJoaoDias.OrderAPI.Model;
+using ShopJoaoDias.OrderAPI.RabbitMqSender;
 using ShopJoaoDias.OrderAPI.Repository;
 using System.Text;
 using System.Text.Json;
@@ -11,12 +12,14 @@ namespace ShopJoaoDias.OrderAPI.MessageConsumer
     public class RabbitMqCheckoutConsumer : BackgroundService
     {
         private readonly OrderRepository _repository;
-        private IConnection _connection;
-        private IModel _channel;
+        private readonly IConnection _connection;
+        private readonly IModel _channel;
+        private IRabbitMqMessageSender _rabbitMqMessageSender;
 
-        public RabbitMqCheckoutConsumer(OrderRepository repository)
+        public RabbitMqCheckoutConsumer(OrderRepository repository, IRabbitMqMessageSender rabbitMqMessageSender)
         {
             _repository = repository;
+            _rabbitMqMessageSender = rabbitMqMessageSender;
             var factory = new ConnectionFactory
             {
                 HostName = "localhost",
@@ -78,6 +81,25 @@ namespace ShopJoaoDias.OrderAPI.MessageConsumer
             }
 
             await _repository.AddOrder(order);
+
+            PaymentVO payment = new()
+            {
+                Name = order.FirstName + " " + order.LastName,
+                CardNumber = order.CardNumber,
+                CVV = order.CVV,
+                ExpiryMonthYear = order.ExpiryMonthYear,
+                OrderId = order.Id,
+                PurchaseAmount = order.PurchaseAmount,
+                Email = order.Email
+            };
+            try
+            {
+                _rabbitMqMessageSender.SendMessage(payment, "order_payment_process_queue");
+            }
+            catch (Exception e)
+            {
+                throw new ArgumentOutOfRangeException(e.Message);
+            }
         }
     }
 }

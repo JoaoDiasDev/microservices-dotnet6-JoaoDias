@@ -8,7 +8,7 @@ namespace ShopJoaoDias.CouponAPI.Repository
     public class CouponRepository : ICouponRepository
     {
         private readonly MySQLContext _context;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public CouponRepository(MySQLContext context, IMapper mapper)
         {
