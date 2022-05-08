@@ -9,13 +9,11 @@ namespace ShopJoaoDias.CouponAPI.Model
     public class Coupon : BaseEntity
     {
         [Column("coupon_code")]
-        [Required]
         [StringLength(30)]
-        public string CouponCode { get; set; }
+        public string? CouponCode { get; set; }
 
         [Column("discount_amount")]
-        [Required]
         [Precision(18, 2)]
-        public decimal DiscountAmount { get; set; }
+        public decimal? DiscountAmount { get; set; }
     }
 }

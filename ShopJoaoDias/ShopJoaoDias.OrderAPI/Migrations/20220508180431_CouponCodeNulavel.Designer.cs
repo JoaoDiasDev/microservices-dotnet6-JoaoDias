@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopJoaoDias.OrderAPI.Model.Context;
 
@@ -10,9 +11,10 @@ using ShopJoaoDias.OrderAPI.Model.Context;
 namespace ShopJoaoDias.OrderAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    partial class MySQLContextModelSnapshot : ModelSnapshot
+    [Migration("20220508180431_CouponCodeNulavel")]
+    partial class CouponCodeNulavel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using ShopJoaoDias.CartAPI.Model.Base;
+﻿using ShopJoaoDias.CartAPI.Model.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShopJoaoDias.CartAPI.Model
 {
@@ -10,6 +10,6 @@ namespace ShopJoaoDias.CartAPI.Model
         public string UserId { get; set; }
 
         [Column("coupon_code")]
-        public string CouponCode { get; set; }
+        public string? CouponCode { get; set; }
     }
 }

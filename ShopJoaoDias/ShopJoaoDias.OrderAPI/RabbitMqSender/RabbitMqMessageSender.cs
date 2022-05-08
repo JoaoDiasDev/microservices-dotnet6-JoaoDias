@@ -26,7 +26,7 @@ namespace ShopJoaoDias.OrderAPI.RabbitMqSender
             if (!ConnectionExists()) return;
             using var channel = _connection.CreateModel();
             channel.QueueDeclare(queue: queueName, false, false, false, arguments: null);
-            byte[] body = GetMessageAsByteArray(message);
+            var body = GetMessageAsByteArray(message);
             channel.BasicPublish(
                 exchange: "", routingKey: queueName, basicProperties: null, body: body);
         }
@@ -44,8 +44,10 @@ namespace ShopJoaoDias.OrderAPI.RabbitMqSender
 
         private bool ConnectionExists()
         {
-            if (_connection == null) return true;
-            CreateConnection();
+            if (_connection == null)
+            {
+                CreateConnection();
+            }
             return _connection != null;
         }
 

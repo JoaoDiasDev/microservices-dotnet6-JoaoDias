@@ -58,7 +58,7 @@ namespace ShopJoaoDias.PaymentAPI.MessageConsumer
 
             try
             {
-                _rabbitMqMessageSender.SendMessage(paymentResult, "order_payment_result_queue");
+                _rabbitMqMessageSender.SendMessage(paymentResult);
             }
             catch (Exception e)
             {

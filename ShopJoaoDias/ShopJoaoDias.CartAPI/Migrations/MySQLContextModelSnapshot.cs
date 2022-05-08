@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopJoaoDias.CartAPI.Model.Context;
 
+#nullable disable
+
 namespace GeekShopping.CartAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
@@ -13,8 +15,8 @@ namespace GeekShopping.CartAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "6.0.0-preview.6.21352.1");
+                .HasAnnotation("ProductVersion", "6.0.0-preview.6.21352.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("GeekShopping.CartAPI.Model.CartDetail", b =>
                 {

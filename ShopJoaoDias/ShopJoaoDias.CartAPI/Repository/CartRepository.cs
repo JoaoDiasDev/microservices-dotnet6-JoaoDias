@@ -26,7 +26,7 @@ namespace ShopJoaoDias.CartAPI.Repository
                         .FirstOrDefaultAsync(c => c.UserId == userId);
             if (header != null)
             {
-                header.CouponCode = couponCode;
+                header.CouponCode = couponCode ?? "No_Coupon_Code";
                 _context.CartHeaders.Update(header);
                 await _context.SaveChangesAsync();
                 return true;

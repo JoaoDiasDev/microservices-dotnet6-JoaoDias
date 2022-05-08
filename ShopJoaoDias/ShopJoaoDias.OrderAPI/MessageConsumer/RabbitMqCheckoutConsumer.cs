@@ -55,7 +55,7 @@ namespace ShopJoaoDias.OrderAPI.MessageConsumer
                 LastName = vo.LastName,
                 OrderDetails = new List<OrderDetail>(),
                 CardNumber = vo.CardNumber,
-                CouponCode = vo.CouponCode,
+                CouponCode = vo.CouponCode ?? "No_Coupon_Code",
                 CVV = vo.CVV,
                 DiscountAmount = vo.DiscountAmount,
                 Email = vo.Email,

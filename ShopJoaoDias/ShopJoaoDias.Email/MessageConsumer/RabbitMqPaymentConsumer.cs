@@ -1,35 +1,36 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using ShopJoaoDias.OrderAPI.Messages;
-using ShopJoaoDias.OrderAPI.Repository;
+using ShopJoaoDias.Email.Messages;
+using ShopJoaoDias.Email.Repository;
 using System.Text;
 using System.Text.Json;
 
-namespace ShopJoaoDias.OrderAPI.MessageConsumer
+namespace ShopJoaoDias.Email.MessageConsumer
 {
     public class RabbitMqPaymentConsumer : BackgroundService
     {
-        private readonly OrderRepository _repository;
-        private readonly IConnection _connection;
-        private readonly IModel _channel;
+        private readonly EmailRepository _repository;
+        private IConnection _connection;
+        private IModel _channel;
         private const string ExchangeName = "DirectPaymentUpdateExchange";
-        private const string PaymentOrderUpdateQueueName = "PaymentOrderUpdateQueueName";
+        private const string PaymentEmailUpdateQueueName = "PaymentEmailUpdateQueueName";
 
-        public RabbitMqPaymentConsumer(OrderRepository repository)
+
+        public RabbitMqPaymentConsumer(EmailRepository repository)
         {
             _repository = repository;
             var factory = new ConnectionFactory
             {
                 HostName = "localhost",
                 UserName = "admin",
-                Password = "admin",
+                Password = "admin"
             };
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
 
             _channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct);
-            _channel.QueueDeclare(PaymentOrderUpdateQueueName, false, false, false, null);
-            _channel.QueueBind(PaymentOrderUpdateQueueName, ExchangeName, "PaymentOrder");
+            _channel.QueueDeclare(PaymentEmailUpdateQueueName, false, false, false, null);
+            _channel.QueueBind(PaymentEmailUpdateQueueName, ExchangeName, "PaymentEmail");
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -39,23 +40,23 @@ namespace ShopJoaoDias.OrderAPI.MessageConsumer
             consumer.Received += (chanel, evt) =>
             {
                 var content = Encoding.UTF8.GetString(evt.Body.ToArray());
-                var vo = JsonSerializer.Deserialize<UpdatePaymentResultVO>(content);
-                UpdatePaymentStatus(vo).GetAwaiter().GetResult();
+                var message = JsonSerializer.Deserialize<UpdatePaymentResultMessage>(content);
+                ProcessLogs(message).GetAwaiter().GetResult();
                 _channel.BasicAck(evt.DeliveryTag, false);
             };
-            _channel.BasicConsume(PaymentOrderUpdateQueueName, false, consumer);
+            _channel.BasicConsume(PaymentEmailUpdateQueueName, false, consumer);
             return Task.CompletedTask;
         }
 
-        private async Task UpdatePaymentStatus(UpdatePaymentResultVO vo)
+        private async Task ProcessLogs(UpdatePaymentResultMessage message)
         {
             try
             {
-                await _repository.UpdateOrderPaymentStatus(vo.OrderId, vo.Status);
+                await _repository.LogEmail(message);
             }
             catch (Exception e)
             {
-                throw new ArgumentException(e.Message);
+                throw new AccessViolationException(e.Message);
             }
         }
     }

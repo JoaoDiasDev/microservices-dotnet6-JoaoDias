@@ -1,7 +1,7 @@
-﻿using ShopJoaoDias.OrderAPI.Model.Base;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using ShopJoaoDias.Email.Model.Base;
 
-namespace ShopJoaoDias.OrderAPI.Model
+namespace ShopJoaoDias.Email.Model
 {
     [Table("order_header")]
     public class OrderHeader : BaseEntity
@@ -48,7 +48,7 @@ namespace ShopJoaoDias.OrderAPI.Model
         [Column("total_itens")]
         public int CartTotalItens { get; set; }
 
-        public List<OrderDetail> OrderDetails { get; set; }
+        public List<EmailLog> OrderDetails { get; set; }
 
         [Column("payment_status")]
         public bool PaymentStatus { get; set; }
