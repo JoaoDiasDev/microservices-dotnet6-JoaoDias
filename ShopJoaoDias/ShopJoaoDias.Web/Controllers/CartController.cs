@@ -43,7 +43,7 @@ namespace ShopJoaoDias.Web.Controllers
                 return RedirectToAction(nameof(CartIndex));
             }
 
-            return View();
+            return BadRequest();
         }
 
         [HttpPost]
@@ -60,7 +60,7 @@ namespace ShopJoaoDias.Web.Controllers
                 return RedirectToAction(nameof(CartIndex));
             }
 
-            return View();
+            return BadRequest();
         }
 
         public async Task<IActionResult> Remove(int id)
@@ -75,7 +75,7 @@ namespace ShopJoaoDias.Web.Controllers
                 return RedirectToAction(nameof(CartIndex));
             }
 
-            return View();
+            return BadRequest();
         }
 
         [HttpGet]
